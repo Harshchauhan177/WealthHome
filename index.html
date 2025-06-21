@@ -6,6 +6,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="loader" class="loader-overlay">
+    <div class="loader-spinner"></div>
+  </div>
 
   <header>
     <h1>WealthHome</h1>
@@ -86,7 +89,8 @@
     <div class="footer-bottom">© 2024 WealthHome. All rights reserved.</div>
   </footer>
 
-  <script src="data-model.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="data-model.js"></script>
+  <script type="module" src="supabase-client.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html> 

@@ -1,50 +1,111 @@
+import { supabase } from './supabase-client.js';
+import { Property } from './data-model.js';
+
 document.addEventListener("DOMContentLoaded", () => {
-  // Load properties from localStorage if available
-  function loadProperties() {
-    const saved = localStorage.getItem('properties');
-    if (saved) {
-      try {
-        const arr = JSON.parse(saved);
-        window.properties.length = 0;
-        arr.forEach(obj => window.properties.push(obj));
-      } catch (e) { window.properties.length = 0; }
+  const loader = document.getElementById('loader');
+  const successModal = document.getElementById('successModal');
+  const closeModalButton = document.querySelector('#successModal .close-button');
+
+  const showLoader = () => loader.classList.add('show');
+  const hideLoader = () => loader.classList.remove('show');
+
+  const showSuccessModal = () => successModal && successModal.classList.add('show');
+  const hideSuccessModal = () => successModal && successModal.classList.remove('show');
+
+  if(closeModalButton) {
+    closeModalButton.addEventListener('click', hideSuccessModal);
+  }
+  window.addEventListener('click', (event) => {
+    if (event.target === successModal) {
+      hideSuccessModal();
+    }
+  });
+
+  let properties = [];
+
+  // fetch properties from supabase
+  async function fetchProperties() {
+    showLoader();
+    try {
+      const { data, error } = await supabase.from('properties').select('*');
+      if (error) {
+        console.error('Error fetching properties:', error);
+        return;
+      }
+      properties = data;
+      displayProperties();
+    } catch (e) {
+      console.error('An unexpected error occurred:', e);
+    } finally {
+      hideLoader();
     }
   }
 
-  // Save properties to localStorage
-  function saveProperties() {
-    localStorage.setItem('properties', JSON.stringify(window.properties));
-  }
-
-  // Initialize properties array from localStorage
-  loadProperties();
-
   const form = document.getElementById("sellForm");
   if (form) {
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      showLoader();
 
-      const imageInput = document.getElementById("image_file");
-      const file = imageInput.files[0];
-      if (!file) return;
-      const imageUrl = URL.createObjectURL(file);
+      const maxRetries = 3;
+      let lastError = null;
 
-      const newProperty = new Property({
-        title: document.getElementById("title").value,
-        description: document.getElementById("description").value,
-        location: document.getElementById("location").value,
-        price: document.getElementById("price").value,
-        type: document.getElementById("type").value,
-        beds: document.getElementById("beds").value,
-        baths: document.getElementById("baths").value,
-        sqft: document.getElementById("sqft").value,
-        image_url: imageUrl
-      });
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          const imageInput = document.getElementById("image_file");
+          const file = imageInput.files[0];
+          if (!file) {
+            alert('Please select an image file to upload.');
+            hideLoader();
+            return;
+          }
 
-      properties.push(newProperty);
-      saveProperties();
-      displayProperties();
-      form.reset();
+          const fileName = `${Date.now()}-${file.name}`;
+          const { error: fileError } = await supabase.storage
+            .from('property-images')
+            .upload(fileName, file);
+          if (fileError) throw fileError;
+
+          const { data: urlData } = supabase.storage
+            .from('property-images')
+            .getPublicUrl(fileName);
+          const imageUrl = urlData.publicUrl;
+
+          const newProperty = new Property({
+            title: document.getElementById("title").value,
+            description: document.getElementById("description").value,
+            location: document.getElementById("location").value,
+            price: document.getElementById("price").value,
+            type: document.getElementById("type").value,
+            beds: document.getElementById("beds").value,
+            baths: document.getElementById("baths").value,
+            sqft: document.getElementById("sqft").value,
+            image_url: imageUrl
+          });
+
+          const { error: insertError } = await supabase
+            .from('properties')
+            .insert([newProperty]);
+          if (insertError) throw insertError;
+
+          // Success!
+          showSuccessModal();
+          form.reset();
+          await fetchProperties(); // Refresh the list on the page
+          return; // Exit after success
+
+        } catch (error) {
+          lastError = error;
+          console.error(`Submit attempt ${attempt} failed:`, error);
+          if (attempt < maxRetries) {
+            await new Promise(res => setTimeout(res, 1000 * attempt)); // Wait before retrying
+          }
+        }
+      }
+
+      // This part only runs if all retries have failed
+      hideLoader();
+      alert(`Submission failed after ${maxRetries} attempts. Please try again. Error: ${lastError.message}`);
     });
   }
 
@@ -90,8 +151,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // On page load, show properties if on index.html
-  if (document.getElementById("buyList") && document.getElementById("rentList")) {
-    displayProperties();
-  }
+  // On page load, show properties
+  fetchProperties();
 }); 
