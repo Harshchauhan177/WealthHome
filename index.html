@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WealthHome - Real Estate</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>WealthHome</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#buy">Buy</a>
+      <a href="#rent">Rent</a>
+      <a href="add-property.html">Add My Property</a>
+    </nav>
+  </header>
+
+  <!-- Home Section -->
+  <section id="home">
+    <div id="home-content">
+      <h2>Find Your Dream Home</h2>
+      <div class="subtitle">Discover the perfect property that matches your lifestyle</div>
+      <div id="searchBarBox">
+        <input type="text" id="searchBar" placeholder="Location">
+        <button id="searchBtn"><span>🔍</span> Search</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Buy Section -->
+  <section id="buy">
+    <h2>Buy Properties</h2>
+    <div id="buyList" class="property-list"></div>
+  </section>
+
+  <!-- Rent Section -->
+  <section id="rent">
+    <h2>Rent Properties</h2>
+    <div id="rentList" class="property-list"></div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="newsletter">
+      <h2>Stay Updated</h2>
+      <p>Subscribe to our newsletter for the latest property news and updates</p>
+      <form class="newsletter-form" onsubmit="event.preventDefault();">
+        <input type="email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <div class="footer-main">
+      <div class="footer-col company">
+        <div class="footer-logo">
+          <span style="font-size:1.7em;vertical-align:middle;">��</span> <span style="font-weight:600; font-size:1.1em;">WealthHome</span>
+        </div>
+        <div class="footer-desc">Your trusted partner in finding the perfect property.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">Quick Links</div>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#buy">Properties</a></li>
+          <li><a href="#">Agents</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">Contact</div>
+        <div>123 Real Estate Ave<br>New York, NY 10001</div>
+        <div>contact@wealthhome.com</div>
+        <div>(555) 123-4567</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">Follow Us</div>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook" class="footer-icon"> <span style="font-size:1.3em;">&#xf09a;</span> </a>
+          <a href="#" aria-label="Twitter" class="footer-icon"> <span style="font-size:1.3em;">&#xf099;</span> </a>
+          <a href="#" aria-label="Instagram" class="footer-icon"> <span style="font-size:1.3em;">&#xf16d;</span> </a>
+          <a href="#" aria-label="LinkedIn" class="footer-icon"> <span style="font-size:1.3em;">&#xf0e1;</span> </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2024 WealthHome. All rights reserved.</div>
+  </footer>
+
+  <script src="data-model.js"></script>
+  <script src="script.js"></script>
+</body>
+</html> 

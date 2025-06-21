@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add My Property - WealthHome</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>WealthHome</h1>
+    <nav>
+      <a href="index.html#home">Home</a>
+      <a href="index.html#buy">Buy</a>
+      <a href="index.html#rent">Rent</a>
+      <a href="add-property.html" class="active">Add My Property</a>
+    </nav>
+  </header>
+
+  <section id="sell">
+    <a href="index.html" style="display:inline-block;margin-bottom:18px;color:#2563eb;text-decoration:none;font-weight:500;font-size:1.05em;">← Back to Home</a>
+    <h2>List Your Property</h2>
+    <form id="sellForm">
+      <input type="text" id="title" placeholder="Property Title" required>
+      <textarea id="description" placeholder="Property Description" required></textarea>
+      <input type="text" id="location" placeholder="City or Location" required>
+      <input type="number" id="price" placeholder="Price in ₹" required>
+      <select id="type" required>
+        <option value="" disabled selected>Select Type</option>
+        <option value="buy">Buy</option>
+        <option value="rent">Rent</option>
+      </select>
+      <input type="number" id="beds" placeholder="Number of Bedrooms" required>
+      <input type="number" id="baths" placeholder="Number of Bathrooms" required>
+      <input type="number" id="sqft" placeholder="Square Feet" required>
+      <input type="file" id="image_file" accept="image/*" required>
+      <button type="submit">Submit Property</button>
+    </form>
+    <div style="margin-top:40px;"></div>
+    <div id="property-listings-on-add">
+      <h2 style="margin-top:0;">All Properties</h2>
+      <div style="display:flex;gap:32px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:260px;">
+          <h3>Buy Properties</h3>
+          <div id="buyList" class="property-list"></div>
+        </div>
+        <div style="flex:1;min-width:260px;">
+          <h3>Rent Properties</h3>
+          <div id="rentList" class="property-list"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer>
+    <div class="newsletter">
+      <h2>Stay Updated</h2>
+      <p>Subscribe to our newsletter for the latest property news and updates</p>
+      <form class="newsletter-form" onsubmit="event.preventDefault();">
+        <input type="email" placeholder="Enter your email" required>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <div class="footer-main">
+      <div class="footer-col company">
+        <div class="footer-logo">
+          <span style="font-size:1.7em;vertical-align:middle;">🏢</span> <span style="font-weight:600; font-size:1.1em;">WealthHome</span>
+        </div>
+        <div class="footer-desc">Your trusted partner in finding the perfect property.</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">Quick Links</div>
+        <ul>
+          <li><a href="index.html#home">About Us</a></li>
+          <li><a href="index.html#buy">Properties</a></li>
+          <li><a href="#">Agents</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">Contact</div>
+        <div>123 Real Estate Ave<br>New York, NY 10001</div>
+        <div>contact@wealthhome.com</div>
+        <div>(555) 123-4567</div>
+      </div>
+      <div class="footer-col">
+        <div class="footer-title">Follow Us</div>
+        <div class="footer-social">
+          <a href="#" aria-label="Facebook" class="footer-icon"> <span style="font-size:1.3em;">&#xf09a;</span> </a>
+          <a href="#" aria-label="Twitter" class="footer-icon"> <span style="font-size:1.3em;">&#xf099;</span> </a>
+          <a href="#" aria-label="Instagram" class="footer-icon"> <span style="font-size:1.3em;">&#xf16d;</span> </a>
+          <a href="#" aria-label="LinkedIn" class="footer-icon"> <span style="font-size:1.3em;">&#xf0e1;</span> </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2024 WealthHome. All rights reserved.</div>
+  </footer>
+
+  <script src="data-model.js"></script>
+  <script src="script.js"></script>
+</body>
+</html> 
